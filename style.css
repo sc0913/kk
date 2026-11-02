@@ -1,322 +1,262 @@
-/* 基础设置 */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+/* ==========================================
+   基础设置与梦幻浅色背景
+   ========================================== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    background-color: #1a1a2e;
-    color: #fff;
+    /* 梦幻浅色渐变：浅蓝 -> 浅紫 -> 浅粉 */
+    background: linear-gradient(135deg, #e0f2fe, #f3e8ff, #fce7f3);
+    color: #1e293b;
     font-family: 'Press Start 2P', monospace;
     display: flex;
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* 隐藏类 */
+.hidden { display: none !important; }
+
+/* ==========================================
+   🌟 开始游戏封面 (浅色版)
+   ========================================== */
+.start-screen {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    /* 柔和的浅色星空 */
+    background: radial-gradient(circle at center, #fdf4ff, #e0e7ff);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease, visibility 0.8s;
+}
+
+.start-screen.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.game-title {
+    font-size: 40px;
+    /* 深一点的草绿色，带亮黄阴影 */
+    color: #4d7c0f; 
+    text-shadow: 4px 4px 0 #fde047, 0 0 20px rgba(163, 230, 53, 0.5);
+    text-align: center;
+    line-height: 1.2;
+    margin-bottom: 50px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+.start-btn {
+    font-size: 16px;
+    padding: 20px 30px;
+    background: linear-gradient(180deg, #fde047, #eab308) !important;
+    color: #422006 !important; /* 深棕色字 */
+    box-shadow: 0 8px 0 #a16207, 0 0 15px rgba(253, 224, 71, 0.8) !important;
+    animation: blink 1.5s step-end infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0.8; filter: brightness(1.1); }
+}
+
+/* ==========================================
+   游戏主界面与浅绿游戏机
+   ========================================== */
+.main-game {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding-top: 80px;
 }
 
-/* 顶部导航栏 */
+/* 顶部导航 (浅黄色) */
 .top-nav {
-    background-color: #0f3460;
+    background-color: #fefce8;
     width: 100%;
-    padding: 20px 10px;
+    padding: 15px 10px;
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
     z-index: 1000;
-    border-bottom: 5px solid #e94560;
+    border-bottom: 4px solid #a3e635;
     display: flex;
     justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-.nav-links {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
+.nav-links { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
 .nav-links a {
-    color: #f1c40f;
-    text-decoration: none;
-    font-size: 10px;
-    transition: color 0.2s;
+    color: #854d0e; text-decoration: none; font-size: 10px;
+    transition: all 0.2s; padding: 5px 10px; border-radius: 3px;
 }
+.nav-links a:hover { color: #fff; background-color: #84cc16; box-shadow: 0 0 8px #84cc16; }
 
-.nav-links a:hover {
-    color: #fff;
-}
-
-/* 游戏机外壳 */
+/* 游戏机外壳 (明亮的鹅黄到嫩绿) */
 .console {
-    background-color: #e94560;
-    padding: 20px;
-    border-radius: 20px;
-    border: 8px solid #0f3460;
-    box-shadow: 10px 10px 0px #0f3460;
-    width: 95%;
-    max-width: 450px;
+    background: linear-gradient(135deg, #fef08a, #d9f99d, #bef264); 
+    padding: 25px;
+    border-radius: 25px;
+    border: 4px solid #4d7c0f; /* 深绿边框 */
+    box-shadow: 
+        0px 12px 0px #3f6212, /* 深绿硬阴影 */
+        0px 20px 20px rgba(0,0,0,0.15), /* 柔和外阴影 */
+        inset 0px 5px 10px rgba(255,255,255,0.8), /* 顶部高光 */
+        inset 0px -5px 10px rgba(0,0,0,0.1);
+    width: 95%; max-width: 460px;
     margin-bottom: 40px;
+    position: relative;
 }
 
-/* 游戏机屏幕 */
+/* 屏幕 (浅紫浅蓝梦幻渐变) */
 .screen {
-    background-color: #f4f4f4;
-    border: 6px solid #0f3460;
-    border-radius: 10px;
-    padding: 15px;
+    background: linear-gradient(180deg, #f5f3ff, #e0e7ff); /* 浅紫到浅蓝 */
+    border: 8px solid #4d7c0f;
+    border-radius: 15px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-}
-
-/* 状态栏 */
-.status-bar {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    font-size: 10px;
-    color: #333;
-}
-
-.status-bar span {
-    display: inline-block;
-    margin-bottom: 5px;
-}
-
-/* 进度条 */
-.bar {
-    background-color: #ccc;
-    height: 15px;
-    border: 3px solid #333;
-    border-radius: 5px;
-    width: 100%;
+    gap: 15px;
+    position: relative;
     overflow: hidden;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
 }
 
-.fill {
-    height: 100%;
-    width: 50%;
-    transition: width 0.3s ease;
+/* 屏幕扫描线 (调淡) */
+.screen::after {
+    content: '';
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.05) 50%);
+    background-size: 100% 4px;
+    pointer-events: none; z-index: 10;
 }
 
-.hunger-fill { background-color: #f39c12; }
-.happy-fill { background-color: #2ecc71; }
+/* 状态栏文字加深 */
+.status-bar {
+    display: flex; flex-direction: column; gap: 12px; font-size: 9px; color: #3730a3; z-index: 20; font-weight: bold;
+}
+.bar {
+    background-color: #c7d2fe; height: 16px; border: 3px solid #4d7c0f;
+    border-radius: 2px; width: 100%; overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+.fill { height: 100%; width: 50%; transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.hunger-fill { background: linear-gradient(90deg, #f59e0b, #fbbf24); box-shadow: 0 0 8px #fbbf24; }
+.happy-fill { background: linear-gradient(90deg, #10b981, #34d399); box-shadow: 0 0 8px #34d399; }
 
-/* 宠物显示区 */
+/* 宠物展示区 (浅色毛玻璃感) */
 .pet-display {
-    background-color: #222;
-    height: 150px;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 3px solid #333;
+    background-color: rgba(255, 255, 255, 0.6);
+    height: 160px; border-radius: 8px;
+    display: flex; justify-content: center; align-items: center;
+    border: 4px solid #a7f3d0; /* 浅绿边框 */
+    box-shadow: inset 0 0 15px rgba(255,255,255,0.8);
+    position: relative; z-index: 20;
 }
 
-/* 主页渲染宠物的网格区域 */
 .pet-render-area {
-    display: grid;
-    grid-template-columns: repeat(16, 1fr);
-    width: 130px;
-    height: 130px;
-    background-color: #ffffff;
-    border: 2px solid #333;
+    display: grid; grid-template-columns: repeat(16, 1fr);
+    width: 140px; height: 140px;
+    background-color: #ffffff; border: 2px solid #4d7c0f;
+}
+.pet-render-cell { background-color: #ffffff; width: 100%; height: 100%; }
+
+/* 库存栏 */
+.inventory-bar {
+    display: flex; justify-content: space-around;
+    font-size: 11px; color: #3730a3; font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 8px; border-radius: 5px;
+    border: 3px solid #a7f3d0; z-index: 20;
 }
 
-.pet-render-cell {
-    background-color: #ffffff;
-    width: 100%;
-    height: 100%;
-}
-
-/* 操作按钮区 */
-.controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 20px;
-    justify-content: center;
-}
-
-/* 像素按钮通用样式 */
+/* 按钮 (亮黄色) */
+.controls { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 25px; justify-content: center; }
 .pixel-btn {
-    background-color: #f1c40f;
-    color: #222;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 10px;
-    padding: 12px 15px;
-    border: 3px solid #0f3460;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    box-shadow: 0 5px 0 #0f3460;
-    transition: transform 0.1s, box-shadow 0.1s;
+    background: linear-gradient(180deg, #fef08a, #eab308);
+    color: #422006; font-family: 'Press Start 2P', monospace;
+    font-size: 10px; padding: 12px 16px;
+    border: 3px solid #4d7c0f; border-radius: 6px;
+    cursor: pointer; text-decoration: none; display: inline-block;
+    box-shadow: 0 6px 0 #4d7c0f; transition: all 0.1s; text-transform: uppercase;
 }
-
-.pixel-btn:active {
-    transform: translateY(5px);
-    box-shadow: 0 0 0 #0f3460;
-}
-
-/* 画板页面专属样式 */
-.pixel-grid {
-    display: grid;
-    grid-template-columns: repeat(16, 1fr); 
-    gap: 1px;
-    background-color: #444; 
-    border: 3px solid #333;
-    width: 100%;
-    max-width: 400px;
-    aspect-ratio: 1 / 1;
-    margin: 0 auto;
-}
-
-.pixel-cell {
-    background-color: #ffffff;
-    cursor: crosshair;
-    transition: background-color 0.1s;
-}
-
-.pixel-cell:hover {
-    opacity: 0.8;
-    box-shadow: inset 0 0 0 1px #e94560;
-}
-
-.color-palette {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 15px;
-}
-
-.color-swatch {
-    width: 30px;
-    height: 30px;
-    border: 2px solid #333;
-    cursor: pointer;
-    border-radius: 3px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 16px;
-}
-
-.color-swatch.active {
-    border: 3px solid #e94560;
-    transform: scale(1.1);
-}
-
-/* 菜园页面专属样式 */
-.garden-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    width: 100%;
-    max-width: 300px;
-    margin: 0 auto;
-}
-
-.plot {
-    background-color: #8B4513;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    border: 4px solid #5c2e0b;
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 40px;
-    transition: all 0.2s ease;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-}
-
-.plot:hover { transform: scale(1.02); }
-.plot.sprout { background-color: #2e7d32; }
-.plot.mature { background-color: #d35400; }
+.pixel-btn:hover { filter: brightness(1.05); box-shadow: 0 6px 0 #4d7c0f, 0 0 10px #fde047; }
+.pixel-btn:active { transform: translateY(6px); box-shadow: 0 0 0 #4d7c0f; }
 
 /* ==========================================
-   独立一栏的 Footer 样式
+   底部 Footer (浅色版)
    ========================================== */
 .console-footer {
-    background-color: #0a192f;
-    width: 100%;
-    margin-top: 50px;
-    padding: 40px 20px 20px;
-    text-align: center;
-    border-top: 5px solid #e94560;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+    background-color: #f8fafc;
+    width: 100%; margin-top: 50px; padding: 40px 20px;
+    text-align: center; border-top: 5px solid #a3e635;
+    display: flex; flex-direction: column; align-items: center; gap: 15px;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
 }
 
-.footer-nav {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 10px;
-}
+.footer-nav { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-bottom: 10px; }
+.footer-nav a { color: #4d7c0f; text-decoration: none; font-size: 10px; transition: color 0.2s; font-weight: bold;}
+.footer-nav a:hover { color: #84cc16; }
 
-.footer-nav a {
-    color: #f1c40f;
-    text-decoration: none;
-    font-size: 10px;
-    transition: color 0.2s;
-}
+.footer-credits p { font-size: 8px; color: #64748b; line-height: 1.8; margin-bottom: 8px; letter-spacing: 1px; }
 
-.footer-nav a:hover { color: #fff; }
+#lang-toggle { background: linear-gradient(180deg, #bae6fd, #38bdf8); box-shadow: 0 6px 0 #0284c7; margin-top: 15px; color: #082f49;}
 
-.footer-credits p {
-    font-size: 8px;
-    color: #8892b0;
-    line-height: 1.8;
-    margin-bottom: 8px;
-    letter-spacing: 1px;
-}
-
-#lang-toggle {
-    margin-top: 15px;
-    background-color: #00d2ff;
-    box-shadow: 0 5px 0 #0f3460;
-}
 /* ==========================================
-   商店页面与库存栏专属样式
+   画板 / 菜园 / 商店 通用样式微调 (适应浅色背景)
    ========================================== */
-.inventory-bar {
-    display: flex;
-    justify-content: space-around;
-    font-size: 12px;
-    color: #333;
-    background-color: #ddd;
-    padding: 5px;
-    border-radius: 5px;
+.pixel-grid {
+    display: grid; grid-template-columns: repeat(16, 1fr); gap: 1px;
+    background-color: #4d7c0f; border: 4px solid #4d7c0f;
+    width: 100%; max-width: 400px; aspect-ratio: 1 / 1;
+    margin: 0 auto; box-shadow: inset 0 0 10px #000; z-index: 20;
+}
+.pixel-cell { background-color: #ffffff; cursor: crosshair; transition: background-color 0.05s; }
+.pixel-cell:hover { opacity: 0.8; box-shadow: inset 0 0 0 1px #e94560; }
+.color-palette { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 15px; z-index: 20; }
+.color-swatch {
+    width: 32px; height: 32px; border: 3px solid #4d7c0f; cursor: pointer;
+    border-radius: 4px; display: flex; justify-content: center; align-items: center;
+    font-size: 16px; box-shadow: 0 3px 0 #4d7c0f; transition: transform 0.1s;
+}
+.color-swatch:active { transform: translateY(3px); box-shadow: none; }
+.color-swatch.active { border: 3px solid #e94560; transform: scale(1.15) translateY(-2px); box-shadow: 0 5px 0 #4d7c0f, 0 0 10px rgba(233, 69, 96, 0.6); }
+
+.garden-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; max-width: 300px; margin: 0 auto; z-index: 20; }
+.plot {
+    background-color: #fed7aa; background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(0,0,0,0.05) 5px, rgba(0,0,0,0.05) 10px); /* 浅泥土色 */
+    width: 100%; aspect-ratio: 1 / 1; border: 4px dashed #92400e; border-radius: 8px;
+    cursor: pointer; display: flex; justify-content: center; align-items: center;
+    font-size: 40px; transition: all 0.2s; box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
+}
+.plot:hover { transform: scale(1.05); filter: brightness(0.95); }
+.plot.sprout { border-style: solid; background-color: #86efac; border-color: #166534; }
+.plot.mature { border-style: solid; background-color: #fdba74; border-color: #c2410c; animation: pulse 2s infinite; }
+
+@keyframes pulse {
+    0% { box-shadow: inset 0 0 15px rgba(0,0,0,0.1), 0 0 5px #c2410c; }
+    50% { box-shadow: inset 0 0 15px rgba(0,0,0,0.1), 0 0 20px #f97316; }
+    100% { box-shadow: inset 0 0 15px rgba(0,0,0,0.1), 0 0 5px #c2410c; }
 }
 
-.shop-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    width: 100%;
-}
-
+.shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; z-index: 20; }
 .shop-item {
-    background-color: #e0e0e0;
-    border: 3px solid #999;
-    border-radius: 8px;
-    padding: 10px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
+    background: #ffffff;
+    border: 4px solid #4d7c0f; border-radius: 8px; padding: 15px 10px;
+    text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px;
+    box-shadow: 0 4px 0 #4d7c0f, 0 4px 10px rgba(0,0,0,0.1); transition: transform 0.2s;
 }
-
-.item-icon { font-size: 40px; }
-.item-name { font-size: 8px; color: #222; }
-.item-price { font-size: 10px; color: #e67e22; font-weight: bold; }
+.shop-item:hover { transform: translateY(-5px); }
+.item-icon { font-size: 45px; filter: drop-shadow(0 5px 3px rgba(0,0,0,0.15)); }
+.item-name { font-size: 9px; color: #1e293b; font-weight: bold; }
+.item-price { font-size: 11px; color: #e74c3c; font-weight: bold; }

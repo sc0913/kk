@@ -9,41 +9,50 @@
 </head>
 <body>
 
-    <header class="top-nav">
-        <div class="nav-links">
-            <a href="index.html" data-en="Console" data-zh="主屏幕">主屏幕</a>
-            <a href="garden.html" data-en="Garden" data-zh="菜园">菜园</a>
-            <a href="shop.html" data-en="Shop" data-zh="商店">商店</a>
-            <a href="editor.html" data-en="Draw" data-zh="画板">画板</a>
-            <a href="about.html" data-en="Manual" data-zh="说明书">说明书</a>
+    <!-- 🌟 开始游戏封面 🌟 -->
+    <div id="start-screen" class="start-screen">
+        <h1 class="game-title">Retro<br>Pixel Pet</h1>
+        <div class="start-btn-wrapper">
+            <button id="start-btn" class="pixel-btn start-btn">Press Start</button>
         </div>
-    </header>
+    </div>
 
-    <div class="console">
-        <div class="screen">
-            <div class="status-bar">
-                <span data-en="Hunger:" data-zh="饥饿:">饥饿:</span>
-                <div class="bar"><div class="fill hunger-fill" id="hunger-bar"></div></div>
-                <span data-en="Happy:" data-zh="快乐:">快乐:</span>
-                <div class="bar"><div class="fill happy-fill" id="happy-bar"></div></div>
+    <!-- 游戏主界面 (初始隐藏) -->
+    <div id="main-game" class="main-game hidden">
+        <header class="top-nav">
+            <div class="nav-links">
+                <a href="index.html" data-en="Console" data-zh="主屏幕">主屏幕</a>
+                <a href="garden.html" data-en="Garden" data-zh="菜园">菜园</a>
+                <a href="shop.html" data-en="Shop" data-zh="商店">商店</a>
+                <a href="editor.html" data-en="Draw" data-zh="画板">画板</a>
+                <a href="about.html" data-en="Manual" data-zh="说明书">说明书</a>
+            </div>
+        </header>
+
+        <div class="console">
+            <div class="screen">
+                <div class="status-bar">
+                    <span data-en="Hunger:" data-zh="饥饿:">饥饿:</span>
+                    <div class="bar"><div class="fill hunger-fill" id="hunger-bar"></div></div>
+                    <span data-en="Happy:" data-zh="快乐:">快乐:</span>
+                    <div class="bar"><div class="fill happy-fill" id="happy-bar"></div></div>
+                </div>
+
+                <div class="pet-display">
+                    <div id="pet-render-area" class="pet-render-area"></div>
+                </div>
+                
+                <div class="inventory-bar">
+                    <span>🍔 x <span id="burger-count">0</span></span>
+                    <span>🧸 x <span id="toy-count">0</span></span>
+                </div>
             </div>
 
-            <div class="pet-display">
-                <div id="pet-render-area" class="pet-render-area"></div>
+            <div class="controls">
+                <button class="pixel-btn" id="feed-btn" data-en="Feed 🍔 (-1)" data-zh="喂食 🍔 (-1)">喂食 🍔 (-1)</button>
+                <button class="pixel-btn" id="play-btn" data-en="Play 🧸 (-1)" data-zh="玩耍 🧸 (-1)">玩耍 🧸 (-1)</button>
+                <a href="editor.html" class="pixel-btn link-btn" data-en="Draw Pet 🎨" data-zh="画宠物 🎨">画宠物 🎨</a>
             </div>
-            
-            <!-- 新增：物品库存显示 -->
-            <div class="inventory-bar">
-                <span>🍔 x <span id="burger-count">0</span></span>
-                <span>🧸 x <span id="toy-count">0</span></span>
-            </div>
-        </div>
-
-        <div class="controls">
-            <!-- 修改了按钮的文字提示 -->
-            <button class="pixel-btn" id="feed-btn" data-en="Feed 🍔 (-1)" data-zh="喂食 🍔 (-1)">喂食 🍔 (-1)</button>
-            <button class="pixel-btn" id="play-btn" data-en="Play 🧸 (-1)" data-zh="玩耍 🧸 (-1)">玩耍 🧸 (-1)</button>
-            <a href="editor.html" class="pixel-btn link-btn" data-en="Draw Pet 🎨" data-zh="画宠物 🎨">画宠物 🎨</a>
         </div>
     </div>
 
