@@ -115,17 +115,16 @@ body {
     border: 3px solid #333;
 }
 
-/* 新增：主页渲染宠物的网格区域 */
+/* 主页渲染宠物的网格区域 */
 .pet-render-area {
     display: grid;
     grid-template-columns: repeat(16, 1fr);
-    width: 130px; /* 在屏幕中间的大小 */
+    width: 130px;
     height: 130px;
     background-color: #ffffff;
     border: 2px solid #333;
 }
 
-/* 主页渲染的格子（去掉了 hover 效果） */
 .pet-render-cell {
     background-color: #ffffff;
     width: 100%;
@@ -160,29 +159,6 @@ body {
 .pixel-btn:active {
     transform: translateY(5px);
     box-shadow: 0 0 0 #0f3460;
-}
-
-/* 底部 Footer 样式 */
-.console-footer {
-    background-color: #0f3460;
-    width: 100%;
-    margin-top: auto;
-    padding: 20px;
-    text-align: center;
-    border-top: 5px solid #e94560;
-}
-
-.footer-credits p {
-    font-size: 8px;
-    color: #a0b3c6;
-    line-height: 1.8;
-    margin-bottom: 10px;
-}
-
-#lang-toggle {
-    margin-top: 10px;
-    background-color: #00d2ff;
-    box-shadow: 0 5px 0 #0f3460;
 }
 
 /* 画板页面专属样式 */
@@ -232,4 +208,80 @@ body {
 .color-swatch.active {
     border: 3px solid #e94560;
     transform: scale(1.1);
+}
+
+/* 菜园页面专属样式 */
+.garden-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.plot {
+    background-color: #8B4513;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border: 4px solid #5c2e0b;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    transition: all 0.2s ease;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+.plot:hover { transform: scale(1.02); }
+.plot.sprout { background-color: #2e7d32; }
+.plot.mature { background-color: #d35400; }
+
+/* ==========================================
+   独立一栏的 Footer 样式
+   ========================================== */
+.console-footer {
+    background-color: #0a192f;
+    width: 100%;
+    margin-top: 50px;
+    padding: 40px 20px 20px;
+    text-align: center;
+    border-top: 5px solid #e94560;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.footer-nav {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.footer-nav a {
+    color: #f1c40f;
+    text-decoration: none;
+    font-size: 10px;
+    transition: color 0.2s;
+}
+
+.footer-nav a:hover { color: #fff; }
+
+.footer-credits p {
+    font-size: 8px;
+    color: #8892b0;
+    line-height: 1.8;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+#lang-toggle {
+    margin-top: 15px;
+    background-color: #00d2ff;
+    box-shadow: 0 5px 0 #0f3460;
 }
