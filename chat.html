@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Chat - Retro Pixel Pet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="top-nav">
+        <div class="nav-links">
+            <a href="index.html" data-en="Console" data-zh="主屏幕">主屏幕</a>
+            <a href="garden.html" data-en="Garden" data-zh="菜园">菜园</a>
+            <a href="shop.html" data-en="Shop" data-zh="商店">商店</a>
+            <a href="editor.html" data-en="Draw" data-zh="画板">画板</a>
+            <a href="chat.html" data-en="Chat" data-zh="对话">对话</a>
+        </div>
+    </header>
+
+    <div class="console">
+        <div class="screen" style="height: auto;">
+            <h2 data-en="Talk to Pet" data-zh="和宠物聊天" style="text-align: center; font-size: 14px; margin-bottom: 10px; color: #3730a3;">和宠物聊天</h2>
+            
+            <div class="chat-container" id="chat-box">
+                <div class="message pet-msg">
+                    你好呀主人！我是你的像素宠物，今天想和我聊点什么？(输入 "吃"、"玩"、"名字" 试试)
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="输入你想对宠物说的话..." autocomplete="off">
+                <button class="pixel-btn" id="send-btn" style="padding: 10px 15px;">发送</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

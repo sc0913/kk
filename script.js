@@ -203,7 +203,6 @@ if (gardenGrid) {
 const pixelGrid = document.getElementById('pixel-grid');
 if (pixelGrid) {
     let currentColor = '#000000';
-    
     for (let i = 0; i < 256; i++) {
         let cell = document.createElement('div'); cell.className = 'pixel-cell'; cell.style.backgroundColor = '#ffffff';
         cell.onmousedown = () => cell.style.backgroundColor = currentColor;
@@ -239,11 +238,70 @@ if (pixelGrid) {
         saveBtn.onclick = () => {
             let colors = []; document.querySelectorAll('.pixel-cell').forEach(c => colors.push(c.style.backgroundColor));
             localStorage.setItem('my-pet-drawing', JSON.stringify(colors)); 
-            
-            // 🌟 这里跳转带上了 ?skip=true 参数
             window.location.href = 'index.html?skip=true'; 
         };
     }
 }
 
+// ==========================================
+// 7. 宠物对话逻辑 (伪 AI)
+// ==========================================
+const chatBox = document.getElementById('chat-box');
+const chatInput = document.getElementById('chat-input');
+const sendBtn = document.getElementById('send-btn');
+
+if (chatBox && chatInput && sendBtn) {
+    const petBrain = [
+        { keywords: ['你好', 'hi', 'hello'], replies: ['主人好呀！今天有什么好吃的吗？', '嗨！我一直在等你来找我玩呢！'] },
+        { keywords: ['饿', '吃', '汉堡', '食物'], replies: ['我想吃赛博汉堡 🍔！快去菜园种点胡萝卜换给我吃嘛~', '肚子咕咕叫了，主人快喂喂我...'] },
+        { keywords: ['玩', '开心', '玩具'], replies: ['陪我玩像素玩具 🧸 嘛！', '只要和主人在一起就很开心啦！'] },
+        { keywords: ['名字', '你是谁'], replies: ['我是你亲手画出来的专属像素宠物呀！', '我叫 Retro Pet，是你的小可爱！'] },
+        { keywords: ['笨蛋', '丑', '讨厌'], replies: ['呜呜呜，主人不要骂我，我生气了 😭', '哼！不理你了！'] },
+        { keywords: ['喜欢', '爱你', '可爱'], replies: ['嘿嘿，我也最喜欢主人啦！😋', '谢谢主人夸奖，我会努力长大的！'] },
+        { keywords: ['晚安', '睡'], replies: ['晚安主人，要在梦里想我哦... 💤', '呼噜噜...我要去睡觉啦。'] }
+    ];
+    
+    const fallbackReplies = [
+        '（歪头）你在说什么呀？我听不懂...',
+        '主人，不如去种点胡萝卜吧！',
+        '那个...我的汉堡好像不够吃了。',
+        '（发呆中...）'
+    ];
+
+    function sendMessage() {
+        const text = chatInput.value.trim();
+        if (!text) return;
+        addMessage(text, 'user-msg');
+        chatInput.value = '';
+
+        setTimeout(() => {
+            let replyText = '';
+            let matched = false;
+            for (let item of petBrain) {
+                if (item.keywords.some(k => text.includes(k))) {
+                    replyText = item.replies[Math.floor(Math.random() * item.replies.length)];
+                    matched = true;
+                    break;
+                }
+            }
+            if (!matched) replyText = fallbackReplies[Math.floor(Math.random() * fallbackReplies.length)];
+            addMessage(replyText, 'pet-msg');
+        }, 600);
+    }
+
+    function addMessage(text, className) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${className}`;
+        msgDiv.textContent = text;
+        chatBox.appendChild(msgDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    sendBtn.onclick = sendMessage;
+    chatInput.onkeypress = (e) => { if (e.key === 'Enter') sendMessage(); };
+}
+
+// ==========================================
+// 8. 启动初始化
+// ==========================================
 document.addEventListener('DOMContentLoaded', () => { loadFooter(); });
