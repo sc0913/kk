@@ -1,0 +1,157 @@
+/* 基础设置 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #1a1a2e; /* 深邃的星空蓝 */
+    color: #fff;
+    font-family: 'Press Start 2P', monospace; /* 使用像素字体 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 40px;
+}
+
+/* 游戏机外壳 */
+.console {
+    background-color: #e94560; /* 鲜艳的亮粉色 */
+    padding: 20px;
+    border-radius: 20px;
+    border: 8px solid #0f3460;
+    box-shadow: 10px 10px 0px #0f3460; /* 像素风硬阴影 */
+    width: 90%;
+    max-width: 400px;
+    margin-bottom: 40px; /* 和底部留点空隙 */
+}
+
+/* 游戏机屏幕 */
+.screen {
+    background-color: #f4f4f4; /* 偏白/浅灰的屏幕底色 */
+    border: 6px solid #0f3460;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 状态栏 */
+.status-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 10px;
+    color: #333;
+}
+
+.status-bar span {
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+/* 进度条 */
+.bar {
+    background-color: #ccc;
+    height: 15px;
+    border: 3px solid #333;
+    border-radius: 5px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.fill {
+    height: 100%;
+    width: 50%; /* 初始值 */
+    transition: width 0.3s ease;
+}
+
+.hunger-fill { background-color: #f39c12; } /* 橙色 */
+.happy-fill { background-color: #2ecc71; } /* 绿色 */
+
+/* 宠物显示区 */
+.pet-display {
+    background-color: #222;
+    height: 150px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid #333;
+}
+
+/* 操作按钮区 */
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+/* 像素按钮通用样式 */
+.pixel-btn {
+    background-color: #f1c40f; /* 亮黄色 */
+    color: #222;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    padding: 12px 15px;
+    border: 3px solid #0f3460;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 5px 0 #0f3460; /* 3D 按钮效果 */
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.pixel-btn:active {
+    transform: translateY(5px); /* 点击下压效果 */
+    box-shadow: 0 0 0 #0f3460;
+}
+
+/* 底部 Footer 样式 */
+.console-footer {
+    background-color: #0f3460;
+    width: 100%;
+    max-width: 600px;
+    margin-top: auto;
+    padding: 20px;
+    text-align: center;
+    border-top: 5px solid #e94560;
+}
+
+.footer-nav {
+    margin-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.footer-nav a {
+    color: #f1c40f;
+    text-decoration: none;
+    font-size: 10px;
+}
+
+.footer-nav a:hover {
+    color: #fff;
+}
+
+.footer-credits p {
+    font-size: 8px;
+    color: #a0b3c6;
+    line-height: 1.8;
+    margin-bottom: 10px;
+}
+
+/* 切换语言按钮稍微单独处理一下 */
+#lang-toggle {
+    margin-top: 10px;
+    background-color: #00d2ff;
+    box-shadow: 0 5px 0 #0f3460;
+}
