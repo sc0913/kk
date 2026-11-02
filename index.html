@@ -3,11 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retro Pixel Pet - KK's Project</title>
+    <title>Retro Pixel Pet</title>
+    <!-- 引入 8-bit 像素字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- 先提前引入 CSS，虽然现在还没建这个文件，但没关系，浏览器只会报个找不到文件的错，不影响页面结构 -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Hello! This is Zhou Yanxi's (KK) Retro Pixel Pet.</h1>
-    <p>Student ID: 2024010233</p>
-    <p>Project is under construction...</p>
+
+    <!-- 游戏机外壳 -->
+    <div class="console">
+        
+        <!-- 游戏机屏幕 -->
+        <div class="screen">
+            <div class="status-bar">
+                <span data-en="Hunger:" data-zh="饥饿:">饥饿:</span>
+                <div class="bar"><div class="fill hunger-fill" id="hunger-bar"></div></div>
+                <span data-en="Happy:" data-zh="快乐:">快乐:</span>
+                <div class="bar"><div class="fill happy-fill" id="happy-bar"></div></div>
+            </div>
+
+            <!-- 宠物显示区 -->
+            <div class="pet-display">
+                <!-- 这里暂时用个 Emoji 占位，后面换成你画的宠物 -->
+                <div id="pet" style="font-size: 80px;">👾</div> 
+            </div>
+        </div>
+
+        <!-- 游戏机操作按钮区 -->
+        <div class="controls">
+            <button class="pixel-btn" id="feed-btn" data-en="Feed 🍔" data-zh="喂食 🍔">喂食 🍔</button>
+            <button class="pixel-btn" id="play-btn" data-en="Play 🎾" data-zh="玩耍 🎾">玩耍 🎾</button>
+            <a href="editor.html" class="pixel-btn link-btn" data-en="Draw Pet 🎨" data-zh="画宠物 🎨">画宠物 🎨</a>
+        </div>
+    </div>
+
+    <!-- 底部 Footer -->
+    <footer class="console-footer">
+        <div class="footer-nav">
+            <a href="index.html" data-en="Console" data-zh="主屏幕">主屏幕</a>
+            <a href="garden.html" data-en="Garden" data-zh="菜园">菜园</a>
+            <a href="shop.html" data-en="Shop" data-zh="商店">商店</a>
+            <a href="editor.html" data-en="Draw" data-zh="画板">画板</a>
+            <a href="about.html" data-en="Manual" data-zh="说明书">说明书</a>
+        </div>
+        <div class="footer-credits">
+            <p data-en="© 2024 Retro Pixel Pet. Designed and coded by Zhou Yanxi (kk). Student ID: 2024010233." data-zh="© 2024 复古像素宠物。由 周彦希kk 设计并编写。学号：2024010233。">
+                © 2024 复古像素宠物。由 周彦希kk 设计并编写。学号：2024010233。
+            </p>
+            <p data-en="All pixel sprites are hand-drawn by the author. Fonts by Google Fonts." data-zh="所有像素素材均由作者手绘。字体来自 Google Fonts。">
+                所有像素素材均由作者手绘。字体来自 Google Fonts。
+            </p>
+        </div>
+        <button id="lang-toggle" class="pixel-btn">🌐 切换语言 / EN</button>
+    </footer>
+
 </body>
 </html>
