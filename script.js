@@ -69,7 +69,7 @@ renderStats();
 
 
 // ==========================================
-// 3. 画板逻辑 (editor.html)
+// 3. 画板逻辑 (editor.html) + 保存功能
 // ==========================================
 const pixelGrid = document.getElementById('pixel-grid');
 
@@ -77,14 +77,17 @@ if (pixelGrid) {
     const gridSize = 16;
     let currentColor = '#000000';
 
+    // 生成 256 个格子
     for (let i = 0; i < gridSize * gridSize; i++) {
         const cell = document.createElement('div');
         cell.classList.add('pixel-cell');
         
+        // 点击涂色
         cell.addEventListener('mousedown', () => {
             cell.style.backgroundColor = currentColor;
         });
         
+        // 拖拽涂色
         cell.addEventListener('mouseenter', (e) => {
             if (e.buttons === 1) {
                 cell.style.backgroundColor = currentColor;
@@ -94,6 +97,7 @@ if (pixelGrid) {
         pixelGrid.appendChild(cell);
     }
 
+    // 调色板逻辑
     const swatches = document.querySelectorAll('.color-swatch');
     swatches.forEach(swatch => {
         swatch.addEventListener('click', () => {
@@ -101,14 +105,11 @@ if (pixelGrid) {
             swatch.classList.add('active');
             
             const colorValue = swatch.getAttribute('data-color');
-            if (colorValue === 'transparent') {
-                currentColor = '#ffffff';
-            } else {
-                currentColor = colorValue;
-            }
+            currentColor = colorValue === 'transparent' ? '#ffffff' : colorValue;
         });
     });
 
+    // 清空按钮
     const clearBtn = document.getElementById('clear-btn');
     if (clearBtn) {
         clearBtn.addEventListener('click', () => {
@@ -117,5 +118,57 @@ if (pixelGrid) {
                 cell.style.backgroundColor = '#ffffff';
             });
         });
+    }
+
+    // 保存按钮
+    const saveBtn = document.getElementById('save-pet-btn');
+    if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+            const cells = document.querySelectorAll('.pixel-cell');
+            const pixelData = [];
+            
+            // 遍历所有格子，把颜色提取出来
+            cells.forEach(cell => {
+                // 如果没有设置背景色，默认是空字符串，我们当做白色处理
+                const color = cell.style.backgroundColor || '#ffffff';
+                pixelData.push(color);
+            });
+
+            // 存入 localStorage
+            localStorage.setItem('saved-pet-pixels', JSON.stringify(pixelData));
+            
+            // 提示并跳转回主页
+            alert(currentLang === 'zh' ? '宠物保存成功！即将返回主页...' : 'Pet saved! Returning to Console...');
+            window.location.href = 'index.html';
+        });
+    }
+}
+
+
+// ==========================================
+// 4. 主页渲染用户画的宠物 (index.html)
+// ==========================================
+const petRenderArea = document.getElementById('pet-render-area');
+
+if (petRenderArea) {
+    const savedPixels = JSON.parse(localStorage.getItem('saved-pet-pixels'));
+
+    if (savedPixels && savedPixels.length === 256) {
+        // 如果有保存过的数据，就渲染这 256 个格子
+        for (let i = 0; i < 256; i++) {
+            const cell = document.createElement('div');
+            cell.classList.add('pet-render-cell');
+            // 把保存的颜色赋给格子
+            cell.style.backgroundColor = savedPixels[i];
+            petRenderArea.appendChild(cell);
+        }
+    } else {
+        // 如果没画过（或者数据不对），就默认放一个 👾 兜底
+        petRenderArea.style.display = 'flex';
+        petRenderArea.style.justifyContent = 'center';
+        petRenderArea.style.alignItems = 'center';
+        petRenderArea.style.fontSize = '60px';
+        petRenderArea.style.backgroundColor = 'transparent';
+        petRenderArea.innerHTML = '👾';
     }
 }
