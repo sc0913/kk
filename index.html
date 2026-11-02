@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <!-- 游戏主界面 (初始隐藏) -->
+    <!-- 游戏主界面 -->
     <div id="main-game" class="main-game hidden">
         <header class="top-nav">
             <div class="nav-links">
@@ -39,7 +39,10 @@
                 </div>
 
                 <div class="pet-display">
-                    <div id="pet-render-area" class="pet-render-area"></div>
+                    <!-- 新增：表情气泡 -->
+                    <div id="pet-bubble" class="pet-bubble hidden">😋</div>
+                    <!-- 宠物容器 (增加了 animation 类支持) -->
+                    <div id="pet-container" class="pet-render-area"></div>
                 </div>
                 
                 <div class="inventory-bar">
