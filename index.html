@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- 核心拦截脚本：如果在网址中检测到 ?skip=true，直接隐藏封面 -->
+    <!-- 🌟 拦截脚本：如果在本次会话中已经点过开始，就不再显示封面 -->
     <script>
-        if (new URLSearchParams(window.location.search).get('skip') === 'true') {
+        if (sessionStorage.getItem('gameStarted') === 'true') {
             document.body.classList.add('skip-cover');
         }
     </script>

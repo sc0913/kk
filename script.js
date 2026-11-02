@@ -1,15 +1,38 @@
 // ==========================================
-// 0. 开始游戏封面点击逻辑
+// 0. 开始游戏封面逻辑
 // ==========================================
 const startScreen = document.getElementById('start-screen');
 const mainGame = document.getElementById('main-game');
 const startBtn = document.getElementById('start-btn');
+
+if (document.body.classList.contains('skip-cover')) {
+    if (startScreen) startScreen.style.display = 'none';
+    if (mainGame) mainGame.classList.remove('hidden');
+} else {
+    if (startScreen) {
+        startScreen.style.display = 'flex';
+        startScreen.classList.remove('fade-out');
+    }
+    if (mainGame) mainGame.classList.add('hidden');
+}
+
+window.addEventListener('pageshow', function(event) {
+    if (!document.body.classList.contains('skip-cover')) {
+        if (startScreen) {
+            startScreen.style.display = 'flex';
+            startScreen.classList.remove('fade-out');
+        }
+        if (mainGame) mainGame.classList.add('hidden');
+    }
+});
 
 if (startBtn) {
     startBtn.onclick = () => {
         startScreen.classList.add('fade-out');
         setTimeout(() => { startScreen.style.display = 'none'; }, 800);
         mainGame.classList.remove('hidden');
+        // 记录已经点过开始了
+        sessionStorage.setItem('gameStarted', 'true');
     };
 }
 
@@ -244,7 +267,7 @@ if (pixelGrid) {
 }
 
 // ==========================================
-// 7. 宠物对话逻辑 (伪 AI)
+// 7. 宠物对话逻辑
 // ==========================================
 const chatBox = document.getElementById('chat-box');
 const chatInput = document.getElementById('chat-input');

@@ -146,3 +146,8 @@ body {
 .chat-input-area { display: flex; gap: 10px; z-index: 20; }
 #chat-input { flex: 1; padding: 12px; border: 3px solid #4d7c0f; border-radius: 6px; font-family: 'Press Start 2P', monospace; font-size: 10px; outline: none; }
 #chat-input:focus { box-shadow: 0 0 10px #a3e635; }
+/* 修复聊天框透明背景的问题 */
+.chat-container {
+    background-color: #ffffff !important;
+    background-image: none !important; 
+}
