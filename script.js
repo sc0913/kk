@@ -9,7 +9,9 @@ function updateLanguage(lang) {
     elementsToTranslate.forEach(el => {
         el.textContent = el.getAttribute(`data-${lang}`);
     });
-    langToggleBtn.textContent = lang === 'zh' ? '🌐 Switch to EN' : '🌐 切换至中文';
+    if (langToggleBtn) {
+        langToggleBtn.textContent = lang === 'zh' ? '🌐 Switch to EN' : '🌐 切换至中文';
+    }
     localStorage.setItem('site-lang', lang);
 }
 
@@ -39,7 +41,7 @@ const feedBtn = document.getElementById('feed-btn');
 const playBtn = document.getElementById('play-btn');
 
 function renderStats() {
-    if (!hungerBar || !happyBar) return; // 如果不在主页则跳过
+    if (!hungerBar || !happyBar) return;
 
     if (petStats.hunger > 100) petStats.hunger = 100;
     if (petStats.hunger < 0) petStats.hunger = 0;
@@ -72,20 +74,17 @@ renderStats();
 const pixelGrid = document.getElementById('pixel-grid');
 
 if (pixelGrid) {
-    const gridSize = 16; // 16x16 网格
-    let currentColor = '#000000'; // 默认画笔颜色
+    const gridSize = 16;
+    let currentColor = '#000000';
 
-    // 生成网格
     for (let i = 0; i < gridSize * gridSize; i++) {
         const cell = document.createElement('div');
         cell.classList.add('pixel-cell');
         
-        // 点击涂色
         cell.addEventListener('mousedown', () => {
             cell.style.backgroundColor = currentColor;
         });
         
-        // 拖拽连续涂色
         cell.addEventListener('mouseenter', (e) => {
             if (e.buttons === 1) {
                 cell.style.backgroundColor = currentColor;
@@ -95,7 +94,6 @@ if (pixelGrid) {
         pixelGrid.appendChild(cell);
     }
 
-    // 处理调色板
     const swatches = document.querySelectorAll('.color-swatch');
     swatches.forEach(swatch => {
         swatch.addEventListener('click', () => {
@@ -104,14 +102,13 @@ if (pixelGrid) {
             
             const colorValue = swatch.getAttribute('data-color');
             if (colorValue === 'transparent') {
-                currentColor = '#ffffff'; // 橡皮擦 = 涂成白色
+                currentColor = '#ffffff';
             } else {
                 currentColor = colorValue;
             }
         });
     });
 
-    // 清空按钮
     const clearBtn = document.getElementById('clear-btn');
     if (clearBtn) {
         clearBtn.addEventListener('click', () => {

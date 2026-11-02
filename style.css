@@ -16,9 +16,7 @@ body {
     padding-top: 80px; /* 为顶部导航留出空间 */
 }
 
-/* ==========================================
-   新增：顶部导航栏
-   ========================================== */
+/* 顶部导航栏 */
 .top-nav {
     background-color: #0f3460;
     width: 100%;
@@ -57,7 +55,7 @@ body {
     border-radius: 20px;
     border: 8px solid #0f3460;
     box-shadow: 10px 10px 0px #0f3460;
-    width: 95%; /* 稍微放宽一点 */
+    width: 95%;
     max-width: 450px;
     margin-bottom: 40px;
 }
@@ -170,9 +168,7 @@ body {
     box-shadow: 0 5px 0 #0f3460;
 }
 
-/* ==========================================
-   画板页面专属样式 (放大版)
-   ========================================== */
+/* 画板页面专属样式 */
 .pixel-grid {
     display: grid;
     grid-template-columns: repeat(16, 1fr); 
@@ -180,18 +176,17 @@ body {
     background-color: #444; 
     border: 3px solid #333;
     width: 100%;
-    max-width: 400px; /* 这里从 320px 放大到了 400px */
+    max-width: 400px;
     aspect-ratio: 1 / 1;
     margin: 0 auto;
 }
 
 .pixel-cell {
     background-color: #ffffff;
-    cursor: crosshair; /* 鼠标变成十字准星，提醒可以画 */
+    cursor: crosshair;
     transition: background-color 0.1s;
 }
 
-/* 鼠标悬停时稍微变暗，方便看清位置 */
 .pixel-cell:hover {
     opacity: 0.8;
     box-shadow: inset 0 0 0 1px #e94560;
@@ -206,7 +201,7 @@ body {
 }
 
 .color-swatch {
-    width: 30px; /* 稍微放大了一点颜色块 */
+    width: 30px;
     height: 30px;
     border: 2px solid #333;
     cursor: pointer;
