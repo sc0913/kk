@@ -14,6 +14,7 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     line-height: 1.6;
+    padding-top: 80px; /* 为固定导航栏留出空间 */
 }
 
 /* 隐藏类 */
@@ -25,7 +26,6 @@ body {
 .start-screen {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
-    /* 柔和的浅色星空 */
     background: radial-gradient(circle at center, #fdf4ff, #e0e7ff);
     display: flex;
     flex-direction: column;
@@ -42,7 +42,6 @@ body {
 
 .game-title {
     font-size: 40px;
-    /* 深一点的草绿色，带亮黄阴影 */
     color: #4d7c0f; 
     text-shadow: 4px 4px 0 #fde047, 0 0 20px rgba(163, 230, 53, 0.5);
     text-align: center;
@@ -61,7 +60,7 @@ body {
     font-size: 16px;
     padding: 20px 30px;
     background: linear-gradient(180deg, #fde047, #eab308) !important;
-    color: #422006 !important; /* 深棕色字 */
+    color: #422006 !important; 
     box-shadow: 0 8px 0 #a16207, 0 0 15px rgba(253, 224, 71, 0.8) !important;
     animation: blink 1.5s step-end infinite;
 }
@@ -78,10 +77,9 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 80px;
 }
 
-/* 顶部导航 (浅黄色) */
+/* 顶部导航 */
 .top-nav {
     background-color: #fefce8;
     width: 100%;
@@ -107,20 +105,23 @@ body {
     background: linear-gradient(135deg, #fef08a, #d9f99d, #bef264); 
     padding: 25px;
     border-radius: 25px;
-    border: 4px solid #4d7c0f; /* 深绿边框 */
+    border: 4px solid #4d7c0f; 
     box-shadow: 
-        0px 12px 0px #3f6212, /* 深绿硬阴影 */
-        0px 20px 20px rgba(0,0,0,0.15), /* 柔和外阴影 */
-        inset 0px 5px 10px rgba(255,255,255,0.8), /* 顶部高光 */
+        0px 12px 0px #3f6212, 
+        0px 20px 20px rgba(0,0,0,0.15), 
+        inset 0px 5px 10px rgba(255,255,255,0.8), 
         inset 0px -5px 10px rgba(0,0,0,0.1);
-    width: 95%; max-width: 460px;
+    width: 95%; 
+    max-width: 460px;
+    
+    /* 👇 核心修改：拉开与顶部导航的距离，实现完美居中 👇 */
+    margin-top: 40px; 
     margin-bottom: 40px;
-    position: relative;
 }
 
 /* 屏幕 (浅紫浅蓝梦幻渐变) */
 .screen {
-    background: linear-gradient(180deg, #f5f3ff, #e0e7ff); /* 浅紫到浅蓝 */
+    background: linear-gradient(180deg, #f5f3ff, #e0e7ff);
     border: 8px solid #4d7c0f;
     border-radius: 15px;
     padding: 20px;
@@ -159,7 +160,7 @@ body {
     background-color: rgba(255, 255, 255, 0.6);
     height: 160px; border-radius: 8px;
     display: flex; justify-content: center; align-items: center;
-    border: 4px solid #a7f3d0; /* 浅绿边框 */
+    border: 4px solid #a7f3d0; 
     box-shadow: inset 0 0 15px rgba(255,255,255,0.8);
     position: relative; z-index: 20;
 }
@@ -234,7 +235,7 @@ body {
 
 .garden-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; max-width: 300px; margin: 0 auto; z-index: 20; }
 .plot {
-    background-color: #fed7aa; background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(0,0,0,0.05) 5px, rgba(0,0,0,0.05) 10px); /* 浅泥土色 */
+    background-color: #fed7aa; background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(0,0,0,0.05) 5px, rgba(0,0,0,0.05) 10px);
     width: 100%; aspect-ratio: 1 / 1; border: 4px dashed #92400e; border-radius: 8px;
     cursor: pointer; display: flex; justify-content: center; align-items: center;
     font-size: 40px; transition: all 0.2s; box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
