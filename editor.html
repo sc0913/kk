@@ -11,11 +11,12 @@
 
     <div class="console">
         <div class="screen" style="height: auto;">
-            <h2 data-en="Pet Creator" data-zh="宠物创造室" style="text-align: center; font-size: 14px; margin-bottom: 10px;">宠物创造室</h2>
+            <!-- 修复了标题颜色，加了 color: #333; -->
+            <h2 data-en="Pet Creator" data-zh="宠物创造室" style="text-align: center; font-size: 14px; margin-bottom: 10px; color: #333;">宠物创造室</h2>
             
             <!-- 画板容器 -->
             <div class="editor-container">
-                <!-- 这里稍后会用 JS 生成 16x16 的网格 -->
+                <!-- 这里会用 JS 生成 16x16 的网格 -->
                 <div id="pixel-grid" class="pixel-grid"></div>
             </div>
 
@@ -59,7 +60,7 @@
         <button id="lang-toggle" class="pixel-btn">🌐 切换语言 / EN</button>
     </footer>
 
-    <!-- 引入 JS，稍后我们会往里面加画板的逻辑 -->
+    <!-- 引入 JS -->
     <script src="script.js"></script>
 </body>
 </html>

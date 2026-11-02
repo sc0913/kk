@@ -13,10 +13,12 @@ function updateLanguage(lang) {
     localStorage.setItem('site-lang', lang);
 }
 
-langToggleBtn.addEventListener('click', () => {
-    currentLang = currentLang === 'zh' ? 'en' : 'zh';
-    updateLanguage(currentLang);
-});
+if (langToggleBtn) {
+    langToggleBtn.addEventListener('click', () => {
+        currentLang = currentLang === 'zh' ? 'en' : 'zh';
+        updateLanguage(currentLang);
+    });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     updateLanguage(currentLang);
@@ -24,23 +26,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // ==========================================
-// 2. 宠物状态与互动逻辑
+// 2. 主页宠物状态与互动逻辑 (index.html)
 // ==========================================
-// 从浏览器获取保存的数据，如果没有，默认饥饿度和快乐度都是 50
 let petStats = JSON.parse(localStorage.getItem('pet-stats')) || {
     hunger: 50,
     happiness: 50
 };
 
-// 获取页面上的 DOM 元素
 const hungerBar = document.getElementById('hunger-bar');
 const happyBar = document.getElementById('happy-bar');
 const feedBtn = document.getElementById('feed-btn');
 const playBtn = document.getElementById('play-btn');
 
-// 渲染进度条宽度
 function renderStats() {
-    // 确保数值不会低于0或高于100
+    if (!hungerBar || !happyBar) return; // 如果不在主页则跳过
+
     if (petStats.hunger > 100) petStats.hunger = 100;
     if (petStats.hunger < 0) petStats.hunger = 0;
     if (petStats.happiness > 100) petStats.happiness = 100;
@@ -49,21 +49,76 @@ function renderStats() {
     hungerBar.style.width = petStats.hunger + '%';
     happyBar.style.width = petStats.happiness + '%';
 
-    // 把最新数据保存到浏览器
     localStorage.setItem('pet-stats', JSON.stringify(petStats));
 }
 
-// 喂食按钮点击事件
-feedBtn.addEventListener('click', () => {
-    petStats.hunger += 10; // 每次增加 10%
-    renderStats();
-});
+if (feedBtn && playBtn) {
+    feedBtn.addEventListener('click', () => {
+        petStats.hunger += 10;
+        renderStats();
+    });
 
-// 玩耍按钮点击事件
-playBtn.addEventListener('click', () => {
-    petStats.happiness += 10; // 每次增加 10%
-    renderStats();
-});
-
-// 页面刚加载时，立刻渲染一次状态
+    playBtn.addEventListener('click', () => {
+        petStats.happiness += 10;
+        renderStats();
+    });
+}
 renderStats();
+
+
+// ==========================================
+// 3. 画板逻辑 (editor.html)
+// ==========================================
+const pixelGrid = document.getElementById('pixel-grid');
+
+if (pixelGrid) {
+    const gridSize = 16; // 16x16 网格
+    let currentColor = '#000000'; // 默认画笔颜色
+
+    // 生成网格
+    for (let i = 0; i < gridSize * gridSize; i++) {
+        const cell = document.createElement('div');
+        cell.classList.add('pixel-cell');
+        
+        // 点击涂色
+        cell.addEventListener('mousedown', () => {
+            cell.style.backgroundColor = currentColor;
+        });
+        
+        // 拖拽连续涂色
+        cell.addEventListener('mouseenter', (e) => {
+            if (e.buttons === 1) {
+                cell.style.backgroundColor = currentColor;
+            }
+        });
+
+        pixelGrid.appendChild(cell);
+    }
+
+    // 处理调色板
+    const swatches = document.querySelectorAll('.color-swatch');
+    swatches.forEach(swatch => {
+        swatch.addEventListener('click', () => {
+            swatches.forEach(s => s.classList.remove('active'));
+            swatch.classList.add('active');
+            
+            const colorValue = swatch.getAttribute('data-color');
+            if (colorValue === 'transparent') {
+                currentColor = '#ffffff'; // 橡皮擦 = 涂成白色
+            } else {
+                currentColor = colorValue;
+            }
+        });
+    });
+
+    // 清空按钮
+    const clearBtn = document.getElementById('clear-btn');
+    if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+            const cells = document.querySelectorAll('.pixel-cell');
+            cells.forEach(cell => {
+                cell.style.backgroundColor = '#ffffff';
+            });
+        });
+    }
+}
