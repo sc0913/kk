@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <!-- 游戏主界面 -->
+    <!-- 游戏主界面 (注意这里自带 hidden 类，默认绝对不显示) -->
     <div id="main-game" class="main-game hidden">
         <header class="top-nav">
             <div class="nav-links">
@@ -39,9 +39,7 @@
                 </div>
 
                 <div class="pet-display">
-                    <!-- 新增：表情气泡 -->
                     <div id="pet-bubble" class="pet-bubble hidden">😋</div>
-                    <!-- 宠物容器 (增加了 animation 类支持) -->
                     <div id="pet-container" class="pet-render-area"></div>
                 </div>
                 
@@ -59,6 +57,7 @@
         </div>
     </div>
 
+    <!-- 注意：把 script 放在 body 最底部，保证 DOM 加载完再执行 -->
     <script src="script.js"></script>
 </body>
 </html>

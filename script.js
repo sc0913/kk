@@ -1,22 +1,38 @@
 // ==========================================
-// 0. 开始游戏封面逻辑
+// 0. 开始游戏封面控制（最核心修复区）
 // ==========================================
 const startScreen = document.getElementById('start-screen');
 const mainGame = document.getElementById('main-game');
 const startBtn = document.getElementById('start-btn');
 
-function resetStartScreen() {
-    if (startScreen && mainGame) {
-        startScreen.classList.remove('fade-out', 'hidden');
-        mainGame.classList.add('hidden');
+// 页面一加载，立刻检查 sessionStorage
+const justSaved = sessionStorage.getItem('justSavedPet');
+
+if (justSaved === 'true') {
+    // 如果是从画板保存过来的，直接砍掉封面，显示游戏机
+    if (startScreen) startScreen.style.display = 'none';
+    if (mainGame) mainGame.classList.remove('hidden');
+    // 清除暗号
+    sessionStorage.removeItem('justSavedPet');
+} else {
+    // 如果是正常进入或点导航栏回来，强制显示封面
+    if (startScreen) {
+        startScreen.style.display = 'flex';
+        startScreen.classList.remove('fade-out');
     }
+    if (mainGame) mainGame.classList.add('hidden');
 }
-window.addEventListener('pageshow', function() { resetStartScreen(); });
+
+// 点击开始按钮
 if (startBtn) {
-    startBtn.addEventListener('click', () => {
+    startBtn.onclick = () => {
         startScreen.classList.add('fade-out');
+        // 等待动画结束（约 800ms）后彻底隐藏
+        setTimeout(() => {
+            startScreen.style.display = 'none';
+        }, 800);
         mainGame.classList.remove('hidden');
-    });
+    };
 }
 
 // ==========================================
@@ -56,7 +72,6 @@ let gameData = JSON.parse(localStorage.getItem('game-data')) || {
 };
 function saveGameData() { localStorage.setItem('game-data', JSON.stringify(gameData)); }
 
-// 预设宠物数据生成器
 function parsePreset(presetArray) {
     const colorMap = {
         '.': '#ffffff', 'B': '#000000', 'R': '#ff0000', 'G': '#00ff00', 
@@ -91,7 +106,7 @@ const presets = {
 };
 
 // ==========================================
-// 3. 主页逻辑 (包含动画与反馈)
+// 3. 主页逻辑
 // ==========================================
 const hungerBar = document.getElementById('hunger-bar');
 const happyBar = document.getElementById('happy-bar');
@@ -111,22 +126,17 @@ function updateHomeUI() {
     saveGameData();
 }
 
-// 播放反馈动画与气泡
 function showReaction(type) {
     if (!petContainer || !petBubble) return;
-    
-    // 移除之前的动画
     petContainer.classList.remove('animate-bounce', 'animate-shake');
-    
     if (type === 'happy') {
-        petBubble.textContent = '😋'; // 或者 😆
+        petBubble.textContent = '😋';
         petBubble.classList.remove('hidden');
-        // 强制重排以重启动画
         void petContainer.offsetWidth; 
         petContainer.classList.add('animate-bounce');
         setTimeout(() => petBubble.classList.add('hidden'), 2000);
     } else if (type === 'angry') {
-        petBubble.textContent = '😭'; // 或者 😡
+        petBubble.textContent = '😭';
         petBubble.classList.remove('hidden');
         void petContainer.offsetWidth;
         petContainer.classList.add('animate-shake');
@@ -232,29 +242,31 @@ const pixelGrid = document.getElementById('pixel-grid');
 if (pixelGrid) {
     let currentColor = '#000000';
     
-    // 初始化画板
     for (let i = 0; i < 256; i++) {
-        let cell = document.createElement('div'); cell.className = 'pixel-cell'; cell.style.backgroundColor = '#ffffff';
+        let cell = document.createElement('div'); 
+        cell.className = 'pixel-cell'; 
+        cell.style.backgroundColor = '#ffffff';
         cell.onmousedown = () => cell.style.backgroundColor = currentColor;
         cell.onmouseenter = (e) => { if (e.buttons === 1) cell.style.backgroundColor = currentColor; };
         pixelGrid.appendChild(cell);
     }
 
-    // 预设按钮点击逻辑
-    document.querySelectorAll('.preset-btn').forEach(btn => {
-        btn.onclick = () => {
-            const presetType = btn.getAttribute('data-preset');
-            const presetColors = presets[presetType];
-            if (presetColors) {
-                const cells = document.querySelectorAll('.pixel-cell');
-                cells.forEach((cell, index) => {
-                    cell.style.backgroundColor = presetColors[index];
-                });
-            }
-        };
-    });
+    const presetBtns = document.querySelectorAll('.preset-btn');
+    if (presetBtns.length > 0) {
+        presetBtns.forEach(btn => {
+            btn.onclick = function() {
+                const presetType = this.getAttribute('data-preset');
+                const presetColors = presets[presetType];
+                if (presetColors) {
+                    const cells = document.querySelectorAll('.pixel-cell');
+                    cells.forEach((cell, index) => {
+                        cell.style.backgroundColor = presetColors[index];
+                    });
+                }
+            };
+        });
+    }
 
-    // 颜色选择
     document.querySelectorAll('.color-swatch').forEach(swatch => {
         swatch.onclick = () => {
             document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
@@ -264,16 +276,21 @@ if (pixelGrid) {
         };
     });
 
-    // 清空
     const clearBtn = document.getElementById('clear-btn');
     if (clearBtn) clearBtn.onclick = () => { document.querySelectorAll('.pixel-cell').forEach(c => c.style.backgroundColor = '#ffffff'); };
     
-    // 保存
     const saveBtn = document.getElementById('save-pet-btn');
     if (saveBtn) {
         saveBtn.onclick = () => {
-            let colors = []; document.querySelectorAll('.pixel-cell').forEach(c => colors.push(c.style.backgroundColor));
-            localStorage.setItem('my-pet-drawing', JSON.stringify(colors)); window.location.href = 'index.html';
+            let colors = []; 
+            document.querySelectorAll('.pixel-cell').forEach(c => colors.push(c.style.backgroundColor));
+            localStorage.setItem('my-pet-drawing', JSON.stringify(colors)); 
+            
+            // 给 sessionStorage 打上暗号
+            sessionStorage.setItem('justSavedPet', 'true');
+            
+            // 跳转
+            window.location.href = 'index.html'; 
         };
     }
 }
