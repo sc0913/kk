@@ -74,6 +74,7 @@ renderStats();
 const pixelGrid = document.getElementById('pixel-grid');
 
 if (pixelGrid) {
+    console.log("画板初始化成功");
     const gridSize = 16;
     let currentColor = '#000000';
 
@@ -81,6 +82,8 @@ if (pixelGrid) {
     for (let i = 0; i < gridSize * gridSize; i++) {
         const cell = document.createElement('div');
         cell.classList.add('pixel-cell');
+        // 强制给个白色底色，方便后面读取
+        cell.style.backgroundColor = '#ffffff'; 
         
         // 点击涂色
         cell.addEventListener('mousedown', () => {
@@ -124,23 +127,32 @@ if (pixelGrid) {
     const saveBtn = document.getElementById('save-pet-btn');
     if (saveBtn) {
         saveBtn.addEventListener('click', () => {
+            console.log("点击了保存按钮");
             const cells = document.querySelectorAll('.pixel-cell');
             const pixelData = [];
             
             // 遍历所有格子，把颜色提取出来
             cells.forEach(cell => {
-                // 如果没有设置背景色，默认是空字符串，我们当做白色处理
-                const color = cell.style.backgroundColor || '#ffffff';
-                pixelData.push(color);
+                // 为了兼容性，统一转成小写的 RGB 格式，或者直接存 hex
+                // 这里我们直接存 style.backgroundColor
+                pixelData.push(cell.style.backgroundColor || '#ffffff');
             });
 
-            // 存入 localStorage
-            localStorage.setItem('saved-pet-pixels', JSON.stringify(pixelData));
-            
-            // 提示并跳转回主页
-            alert(currentLang === 'zh' ? '宠物保存成功！即将返回主页...' : 'Pet saved! Returning to Console...');
-            window.location.href = 'index.html';
+            try {
+                // 存入 localStorage
+                localStorage.setItem('saved-pet-pixels', JSON.stringify(pixelData));
+                console.log("保存成功，数据长度:", pixelData.length);
+                
+                // 提示并跳转回主页
+                alert(currentLang === 'zh' ? '宠物保存成功！即将返回主页...' : 'Pet saved! Returning to Console...');
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error("保存失败:", error);
+                alert("保存失败，请查看控制台报错。");
+            }
         });
+    } else {
+        console.error("找不到保存按钮 #save-pet-btn");
     }
 }
 
@@ -151,19 +163,19 @@ if (pixelGrid) {
 const petRenderArea = document.getElementById('pet-render-area');
 
 if (petRenderArea) {
+    console.log("主页渲染区已找到");
     const savedPixels = JSON.parse(localStorage.getItem('saved-pet-pixels'));
 
     if (savedPixels && savedPixels.length === 256) {
-        // 如果有保存过的数据，就渲染这 256 个格子
+        console.log("找到了保存的宠物数据，开始渲染");
         for (let i = 0; i < 256; i++) {
             const cell = document.createElement('div');
             cell.classList.add('pet-render-cell');
-            // 把保存的颜色赋给格子
             cell.style.backgroundColor = savedPixels[i];
             petRenderArea.appendChild(cell);
         }
     } else {
-        // 如果没画过（或者数据不对），就默认放一个 👾 兜底
+        console.log("没有找到保存的宠物数据，显示默认 Emoji");
         petRenderArea.style.display = 'flex';
         petRenderArea.style.justifyContent = 'center';
         petRenderArea.style.alignItems = 'center';
