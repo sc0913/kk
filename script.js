@@ -1,36 +1,14 @@
 // ==========================================
-// 0. 开始游戏封面控制（最核心修复区）
+// 0. 开始游戏封面点击逻辑
 // ==========================================
 const startScreen = document.getElementById('start-screen');
 const mainGame = document.getElementById('main-game');
 const startBtn = document.getElementById('start-btn');
 
-// 页面一加载，立刻检查 sessionStorage
-const justSaved = sessionStorage.getItem('justSavedPet');
-
-if (justSaved === 'true') {
-    // 如果是从画板保存过来的，直接砍掉封面，显示游戏机
-    if (startScreen) startScreen.style.display = 'none';
-    if (mainGame) mainGame.classList.remove('hidden');
-    // 清除暗号
-    sessionStorage.removeItem('justSavedPet');
-} else {
-    // 如果是正常进入或点导航栏回来，强制显示封面
-    if (startScreen) {
-        startScreen.style.display = 'flex';
-        startScreen.classList.remove('fade-out');
-    }
-    if (mainGame) mainGame.classList.add('hidden');
-}
-
-// 点击开始按钮
 if (startBtn) {
     startBtn.onclick = () => {
         startScreen.classList.add('fade-out');
-        // 等待动画结束（约 800ms）后彻底隐藏
-        setTimeout(() => {
-            startScreen.style.display = 'none';
-        }, 800);
+        setTimeout(() => { startScreen.style.display = 'none'; }, 800);
         mainGame.classList.remove('hidden');
     };
 }
@@ -73,14 +51,9 @@ let gameData = JSON.parse(localStorage.getItem('game-data')) || {
 function saveGameData() { localStorage.setItem('game-data', JSON.stringify(gameData)); }
 
 function parsePreset(presetArray) {
-    const colorMap = {
-        '.': '#ffffff', 'B': '#000000', 'R': '#ff0000', 'G': '#00ff00', 
-        'U': '#0000ff', 'Y': '#ffff00', 'P': '#ff00ff', 'O': '#f59e0b', 'C': '#22d3ee'
-    };
+    const colorMap = { '.': '#ffffff', 'B': '#000000', 'R': '#ff0000', 'G': '#00ff00', 'U': '#0000ff', 'Y': '#ffff00', 'P': '#ff00ff', 'O': '#f59e0b', 'C': '#22d3ee' };
     let colors = [];
-    presetArray.forEach(row => {
-        row.split('').forEach(char => colors.push(colorMap[char] || '#ffffff'));
-    });
+    presetArray.forEach(row => { row.split('').forEach(char => colors.push(colorMap[char] || '#ffffff')); });
     return colors;
 }
 
@@ -149,24 +122,14 @@ const playBtn = document.getElementById('play-btn');
 
 if (feedBtn) {
     feedBtn.onclick = () => {
-        if (gameData.burgers > 0) { 
-            gameData.burgers--; gameData.hunger += 20; updateHomeUI(); 
-            showReaction('happy');
-        } else { 
-            showReaction('angry');
-            alert("没有汉堡了！快去菜园种菜，然后去商店兑换吧！"); 
-        }
+        if (gameData.burgers > 0) { gameData.burgers--; gameData.hunger += 20; updateHomeUI(); showReaction('happy'); } 
+        else { showReaction('angry'); alert("没有汉堡了！快去菜园种菜，然后去商店兑换吧！"); }
     };
 }
 if (playBtn) {
     playBtn.onclick = () => {
-        if (gameData.toys > 0) { 
-            gameData.toys--; gameData.happiness += 20; updateHomeUI(); 
-            showReaction('happy');
-        } else { 
-            showReaction('angry');
-            alert("没有玩具了！快去菜园种菜，然后去商店兑换吧！"); 
-        }
+        if (gameData.toys > 0) { gameData.toys--; gameData.happiness += 20; updateHomeUI(); showReaction('happy'); } 
+        else { showReaction('angry'); alert("没有玩具了！快去菜园种菜，然后去商店兑换吧！"); }
     };
 }
 
@@ -191,7 +154,6 @@ updateHomeUI();
 // ==========================================
 const shopCarrotCountEl = document.getElementById('shop-carrot-count');
 const buyButtons = document.querySelectorAll('.buy-btn');
-
 if (shopCarrotCountEl) {
     function updateShopUI() { shopCarrotCountEl.textContent = gameData.carrots; }
     buyButtons.forEach(btn => {
@@ -243,29 +205,22 @@ if (pixelGrid) {
     let currentColor = '#000000';
     
     for (let i = 0; i < 256; i++) {
-        let cell = document.createElement('div'); 
-        cell.className = 'pixel-cell'; 
-        cell.style.backgroundColor = '#ffffff';
+        let cell = document.createElement('div'); cell.className = 'pixel-cell'; cell.style.backgroundColor = '#ffffff';
         cell.onmousedown = () => cell.style.backgroundColor = currentColor;
         cell.onmouseenter = (e) => { if (e.buttons === 1) cell.style.backgroundColor = currentColor; };
         pixelGrid.appendChild(cell);
     }
 
-    const presetBtns = document.querySelectorAll('.preset-btn');
-    if (presetBtns.length > 0) {
-        presetBtns.forEach(btn => {
-            btn.onclick = function() {
-                const presetType = this.getAttribute('data-preset');
-                const presetColors = presets[presetType];
-                if (presetColors) {
-                    const cells = document.querySelectorAll('.pixel-cell');
-                    cells.forEach((cell, index) => {
-                        cell.style.backgroundColor = presetColors[index];
-                    });
-                }
-            };
-        });
-    }
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.onclick = function() {
+            const presetType = this.getAttribute('data-preset');
+            const presetColors = presets[presetType];
+            if (presetColors) {
+                const cells = document.querySelectorAll('.pixel-cell');
+                cells.forEach((cell, index) => { cell.style.backgroundColor = presetColors[index]; });
+            }
+        };
+    });
 
     document.querySelectorAll('.color-swatch').forEach(swatch => {
         swatch.onclick = () => {
@@ -282,15 +237,11 @@ if (pixelGrid) {
     const saveBtn = document.getElementById('save-pet-btn');
     if (saveBtn) {
         saveBtn.onclick = () => {
-            let colors = []; 
-            document.querySelectorAll('.pixel-cell').forEach(c => colors.push(c.style.backgroundColor));
+            let colors = []; document.querySelectorAll('.pixel-cell').forEach(c => colors.push(c.style.backgroundColor));
             localStorage.setItem('my-pet-drawing', JSON.stringify(colors)); 
             
-            // 给 sessionStorage 打上暗号
-            sessionStorage.setItem('justSavedPet', 'true');
-            
-            // 跳转
-            window.location.href = 'index.html'; 
+            // 🌟 这里跳转带上了 ?skip=true 参数
+            window.location.href = 'index.html?skip=true'; 
         };
     }
 }
