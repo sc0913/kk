@@ -9,7 +9,6 @@
 </head>
 <body>
 
-    <!-- 顶部导航栏 -->
     <header class="top-nav">
         <div class="nav-links">
             <a href="index.html" data-en="Console" data-zh="主屏幕">主屏幕</a>
@@ -20,7 +19,6 @@
         </div>
     </header>
 
-    <!-- 游戏机外壳 -->
     <div class="console">
         <div class="screen">
             <div class="status-bar">
@@ -33,16 +31,22 @@
             <div class="pet-display">
                 <div id="pet-render-area" class="pet-render-area"></div>
             </div>
+            
+            <!-- 新增：物品库存显示 -->
+            <div class="inventory-bar">
+                <span>🍔 x <span id="burger-count">0</span></span>
+                <span>🧸 x <span id="toy-count">0</span></span>
+            </div>
         </div>
 
         <div class="controls">
-            <button class="pixel-btn" id="feed-btn" data-en="Feed 🍔" data-zh="喂食 🍔">喂食 🍔</button>
-            <button class="pixel-btn" id="play-btn" data-en="Play 🎾" data-zh="玩耍 🎾">玩耍 🎾</button>
+            <!-- 修改了按钮的文字提示 -->
+            <button class="pixel-btn" id="feed-btn" data-en="Feed 🍔 (-1)" data-zh="喂食 🍔 (-1)">喂食 🍔 (-1)</button>
+            <button class="pixel-btn" id="play-btn" data-en="Play 🧸 (-1)" data-zh="玩耍 🧸 (-1)">玩耍 🧸 (-1)</button>
             <a href="editor.html" class="pixel-btn link-btn" data-en="Draw Pet 🎨" data-zh="画宠物 🎨">画宠物 🎨</a>
         </div>
     </div>
 
-    <!-- 这里不再写 footer 标签，而是由 script.js 动态加载 -->
     <script src="script.js"></script>
 </body>
 </html>

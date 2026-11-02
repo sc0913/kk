@@ -2,12 +2,9 @@
 // 1. 动态加载 Footer 与 语言切换逻辑
 // ==========================================
 function applyLanguage(lang) {
-    // 遍历页面上所有带 data-en 和 data-zh 的元素
     document.querySelectorAll('[data-en][data-zh]').forEach(el => {
         el.textContent = el.getAttribute('data-' + lang);
     });
-    
-    // 更新切换按钮的文字
     const langBtn = document.getElementById('lang-toggle');
     if (langBtn) {
         langBtn.textContent = lang === 'zh' ? '🌐 Switch to EN' : '🌐 切换至中文';
@@ -17,15 +14,11 @@ function applyLanguage(lang) {
 
 async function loadFooter() {
     try {
-        // 请求 footer.html
         const response = await fetch('footer.html');
         const htmlData = await response.text();
-        
-        // 把 footer 插入到 script 标签前面
         const scriptTag = document.querySelector('script[src="script.js"]');
         scriptTag.insertAdjacentHTML('beforebegin', htmlData);
 
-        // Footer 插入后，给语言按钮绑定事件
         const langBtn = document.getElementById('lang-toggle');
         if (langBtn) {
             langBtn.addEventListener('click', () => {
@@ -34,89 +27,82 @@ async function loadFooter() {
                 applyLanguage(currentLang);
             });
         }
-
-        // 初始化应用语言
         let currentLang = localStorage.getItem('site-lang') || 'zh';
         applyLanguage(currentLang);
-
     } catch (error) {
-        console.error("Footer 加载失败！请确保使用 Live Server 打开。", error);
+        console.error("Footer 加载失败，请用 Live Server 打开。", error);
     }
 }
 
 // ==========================================
-// 2. 主页数值逻辑 (index.html)
+// 2. 游戏全局数据 (胡萝卜、汉堡、玩具、宠物数值)
 // ==========================================
-let stats = JSON.parse(localStorage.getItem('pet-stats')) || { hunger: 50, happiness: 50 };
+let gameData = JSON.parse(localStorage.getItem('game-data')) || {
+    carrots: 0,
+    burgers: 0,
+    toys: 0,
+    hunger: 50,
+    happiness: 50,
+    gardenPlots: [0, 0, 0, 0] // 0空, 1发芽, 2成熟
+};
+
+function saveGameData() {
+    localStorage.setItem('game-data', JSON.stringify(gameData));
+}
+
+// ==========================================
+// 3. 主页逻辑 (index.html)
+// ==========================================
 const hungerBar = document.getElementById('hunger-bar');
 const happyBar = document.getElementById('happy-bar');
+const burgerCountEl = document.getElementById('burger-count');
+const toyCountEl = document.getElementById('toy-count');
 
-function updateBars() {
-    if (!hungerBar || !happyBar) return;
-    stats.hunger = Math.min(100, Math.max(0, stats.hunger));
-    stats.happiness = Math.min(100, Math.max(0, stats.happiness));
-    hungerBar.style.width = stats.hunger + '%';
-    happyBar.style.width = stats.happiness + '%';
-    localStorage.setItem('pet-stats', JSON.stringify(stats));
+function updateHomeUI() {
+    if (!hungerBar) return;
+    
+    // 限制数值在 0-100
+    gameData.hunger = Math.min(100, Math.max(0, gameData.hunger));
+    gameData.happiness = Math.min(100, Math.max(0, gameData.happiness));
+    
+    hungerBar.style.width = gameData.hunger + '%';
+    happyBar.style.width = gameData.happiness + '%';
+    
+    // 更新库存显示
+    if(burgerCountEl) burgerCountEl.textContent = gameData.burgers;
+    if(toyCountEl) toyCountEl.textContent = gameData.toys;
+    
+    saveGameData();
 }
 
 const feedBtn = document.getElementById('feed-btn');
 const playBtn = document.getElementById('play-btn');
-if (feedBtn) feedBtn.onclick = () => { stats.hunger += 10; updateBars(); };
-if (playBtn) playBtn.onclick = () => { stats.happiness += 10; updateBars(); };
-updateBars();
 
-// ==========================================
-// 3. 画板保存逻辑 (editor.html)
-// ==========================================
-const pixelGrid = document.getElementById('pixel-grid');
-
-if (pixelGrid) {
-    let currentColor = '#000000';
-    
-    // 生成 16x16 网格
-    for (let i = 0; i < 256; i++) {
-        let cell = document.createElement('div');
-        cell.className = 'pixel-cell';
-        cell.style.backgroundColor = '#ffffff';
-        
-        cell.onmousedown = () => cell.style.backgroundColor = currentColor;
-        cell.onmouseenter = (e) => { if (e.buttons === 1) cell.style.backgroundColor = currentColor; };
-        
-        pixelGrid.appendChild(cell);
-    }
-
-    // 调色板
-    document.querySelectorAll('.color-swatch').forEach(swatch => {
-        swatch.onclick = () => {
-            document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
-            swatch.classList.add('active');
-            let c = swatch.getAttribute('data-color');
-            currentColor = (c === 'transparent') ? '#ffffff' : c;
-        };
-    });
-
-    // 清空
-    const clearBtn = document.getElementById('clear-btn');
-    if (clearBtn) {
-        clearBtn.onclick = () => {
-            document.querySelectorAll('.pixel-cell').forEach(c => c.style.backgroundColor = '#ffffff');
-        };
-    }
-
-    // 保存
-    const saveBtn = document.getElementById('save-pet-btn');
-    if (saveBtn) {
-        saveBtn.onclick = () => {
-            let colors = [];
-            document.querySelectorAll('.pixel-cell').forEach(c => colors.push(c.style.backgroundColor));
-            localStorage.setItem('my-pet-drawing', JSON.stringify(colors));
-            window.location.href = 'index.html';
-        };
-    }
+if (feedBtn) {
+    feedBtn.onclick = () => {
+        if (gameData.burgers > 0) {
+            gameData.burgers--;
+            gameData.hunger += 20; // 吃汉堡加 20
+            updateHomeUI();
+        } else {
+            alert("没有汉堡了！快去菜园种菜，然后去商店兑换吧！");
+        }
+    };
 }
 
-// 渲染画好的宠物 (index.html)
+if (playBtn) {
+    playBtn.onclick = () => {
+        if (gameData.toys > 0) {
+            gameData.toys--;
+            gameData.happiness += 20; // 玩玩具加 20
+            updateHomeUI();
+        } else {
+            alert("没有玩具了！快去菜园种菜，然后去商店兑换吧！");
+        }
+    };
+}
+
+// 渲染宠物图案
 const renderArea = document.getElementById('pet-render-area');
 if (renderArea) {
     let savedColors = localStorage.getItem('my-pet-drawing');
@@ -131,7 +117,6 @@ if (renderArea) {
             });
         }
     } else {
-        // 默认显示外星人
         renderArea.style.display = 'flex';
         renderArea.style.alignItems = 'center';
         renderArea.style.justifyContent = 'center';
@@ -139,40 +124,84 @@ if (renderArea) {
         renderArea.innerHTML = '👾';
     }
 }
+updateHomeUI();
 
 // ==========================================
-// 4. 菜园种菜逻辑 (garden.html)
+// 4. 商店逻辑 (shop.html)
+// ==========================================
+const shopCarrotCountEl = document.getElementById('shop-carrot-count');
+const buyButtons = document.querySelectorAll('.buy-btn');
+
+if (shopCarrotCountEl) {
+    function updateShopUI() {
+        shopCarrotCountEl.textContent = gameData.carrots;
+    }
+    
+    buyButtons.forEach(btn => {
+        btn.onclick = () => {
+            const itemType = btn.getAttribute('data-item');
+            
+            if (itemType === 'burger') {
+                if (gameData.carrots >= 2) {
+                    gameData.carrots -= 2;
+                    gameData.burgers += 1;
+                    alert("兑换成功！获得 1 个汉堡 🍔");
+                } else {
+                    alert("胡萝卜不足！需要 2 个胡萝卜。");
+                }
+            } else if (itemType === 'toy') {
+                if (gameData.carrots >= 3) {
+                    gameData.carrots -= 3;
+                    gameData.toys += 1;
+                    alert("兑换成功！获得 1 个玩具 🧸");
+                } else {
+                    alert("胡萝卜不足！需要 3 个胡萝卜。");
+                }
+            }
+            
+            saveGameData();
+            updateShopUI();
+        };
+    });
+    
+    updateShopUI();
+}
+
+// ==========================================
+// 5. 菜园逻辑 (garden.html)
 // ==========================================
 const gardenGrid = document.querySelector('.garden-grid');
 if (gardenGrid) {
-    let plots = JSON.parse(localStorage.getItem('garden-plots')) || [0, 0, 0, 0];
-    let carrots = parseInt(localStorage.getItem('garden-carrots')) || 0;
     const carrotCountEl = document.getElementById('carrot-count');
     
     function renderGarden() {
-        if (carrotCountEl) carrotCountEl.textContent = carrots;
+        if (carrotCountEl) carrotCountEl.textContent = gameData.carrots;
         const plotElements = document.querySelectorAll('.plot');
         plotElements.forEach((el, index) => {
             el.classList.remove('sprout', 'mature');
             el.innerHTML = '';
-            if (plots[index] === 1) {
+            if (gameData.gardenPlots[index] === 1) {
                 el.classList.add('sprout');
                 el.innerHTML = '🌱';
-            } else if (plots[index] === 2) {
+            } else if (gameData.gardenPlots[index] === 2) {
                 el.classList.add('mature');
                 el.innerHTML = '🥕';
             }
         });
-        localStorage.setItem('garden-plots', JSON.stringify(plots));
-        localStorage.setItem('garden-carrots', carrots);
+        saveGameData();
     }
     
     document.querySelectorAll('.plot').forEach(el => {
         el.addEventListener('click', () => {
             const index = parseInt(el.getAttribute('data-index'));
-            if (plots[index] === 0) plots[index] = 1;
-            else if (plots[index] === 1) plots[index] = 2;
-            else if (plots[index] === 2) { carrots += 1; plots[index] = 0; }
+            if (gameData.gardenPlots[index] === 0) {
+                gameData.gardenPlots[index] = 1;
+            } else if (gameData.gardenPlots[index] === 1) {
+                gameData.gardenPlots[index] = 2;
+            } else if (gameData.gardenPlots[index] === 2) {
+                gameData.carrots += 1;
+                gameData.gardenPlots[index] = 0;
+            }
             renderGarden();
         });
     });
@@ -180,8 +209,50 @@ if (gardenGrid) {
 }
 
 // ==========================================
-// 5. 启动所有功能
+// 6. 画板保存逻辑 (editor.html)
+// ==========================================
+const pixelGrid = document.getElementById('pixel-grid');
+if (pixelGrid) {
+    let currentColor = '#000000';
+    for (let i = 0; i < 256; i++) {
+        let cell = document.createElement('div');
+        cell.className = 'pixel-cell';
+        cell.style.backgroundColor = '#ffffff';
+        cell.onmousedown = () => cell.style.backgroundColor = currentColor;
+        cell.onmouseenter = (e) => { if (e.buttons === 1) cell.style.backgroundColor = currentColor; };
+        pixelGrid.appendChild(cell);
+    }
+
+    document.querySelectorAll('.color-swatch').forEach(swatch => {
+        swatch.onclick = () => {
+            document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+            swatch.classList.add('active');
+            let c = swatch.getAttribute('data-color');
+            currentColor = (c === 'transparent') ? '#ffffff' : c;
+        };
+    });
+
+    const clearBtn = document.getElementById('clear-btn');
+    if (clearBtn) {
+        clearBtn.onclick = () => {
+            document.querySelectorAll('.pixel-cell').forEach(c => c.style.backgroundColor = '#ffffff');
+        };
+    }
+
+    const saveBtn = document.getElementById('save-pet-btn');
+    if (saveBtn) {
+        saveBtn.onclick = () => {
+            let colors = [];
+            document.querySelectorAll('.pixel-cell').forEach(c => colors.push(c.style.backgroundColor));
+            localStorage.setItem('my-pet-drawing', JSON.stringify(colors));
+            window.location.href = 'index.html';
+        };
+    }
+}
+
+// ==========================================
+// 7. 启动
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
-    loadFooter(); // 页面加载时动态拉取 Footer
+    loadFooter();
 });

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Shop - Retro Pixel Pet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="top-nav">
+        <div class="nav-links">
+            <a href="index.html" data-en="Console" data-zh="主屏幕">主屏幕</a>
+            <a href="garden.html" data-en="Garden" data-zh="菜园">菜园</a>
+            <a href="shop.html" data-en="Shop" data-zh="商店">商店</a>
+            <a href="editor.html" data-en="Draw" data-zh="画板">画板</a>
+            <a href="about.html" data-en="Manual" data-zh="说明书">说明书</a>
+        </div>
+    </header>
+
+    <div class="console">
+        <div class="screen" style="height: auto;">
+            <h2 data-en="Item Shop" data-zh="兑换商店" style="text-align: center; font-size: 14px; margin-bottom: 10px; color: #333;">兑换商店</h2>
+            
+            <!-- 胡萝卜库存 -->
+            <div style="text-align: center; font-size: 12px; color: #222; margin-bottom: 15px;">
+                <span data-en="Your Carrots: " data-zh="你的胡萝卜： ">你的胡萝卜： </span>
+                <span id="shop-carrot-count" style="color: #e67e22; font-weight: bold;">0</span> 🥕
+            </div>
+
+            <!-- 商店物品列表 -->
+            <div class="shop-grid">
+                <!-- 商品1：汉堡 -->
+                <div class="shop-item">
+                    <div class="item-icon">🍔</div>
+                    <div class="item-name" data-en="Cyber Burger" data-zh="赛博汉堡">赛博汉堡</div>
+                    <div class="item-price">2 🥕</div>
+                    <button class="pixel-btn buy-btn" data-item="burger" style="font-size: 8px; padding: 8px;" data-en="Buy" data-zh="兑换">兑换</button>
+                </div>
+
+                <!-- 商品2：玩具 -->
+                <div class="shop-item">
+                    <div class="item-icon">🧸</div>
+                    <div class="item-name" data-en="Pixel Toy" data-zh="像素玩具">像素玩具</div>
+                    <div class="item-price">3 🥕</div>
+                    <button class="pixel-btn buy-btn" data-item="toy" style="font-size: 8px; padding: 8px;" data-en="Buy" data-zh="兑换">兑换</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
